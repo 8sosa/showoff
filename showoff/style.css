@@ -22,7 +22,7 @@ table {
     border: 1px solid black;
 }
 td {
-    background-color: #E4F5D4;
+    background-color: #d9a2e7;
     border: 1px solid black;
 }
 
@@ -36,6 +36,11 @@ td {
 
 td {
     font-weight: lighter;
+}
+
+#jumbotron {
+    height: 500px;
+    
 }
 
 @media(min-width: 768px)

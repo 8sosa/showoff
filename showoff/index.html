@@ -35,19 +35,41 @@
     </nav>
     <!-- JUMBOTRON -->
     <section>
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="..." class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-              </div>
+      <div id="carouselFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner" id="jumbotron">
+          <script id="cartpl" type="text/template">
+            {{#movies}}
+            <div class="carousel-item active">
+              <img src="{{Images}}" class="d-block w-100" alt="Photo of {{Title}}"/>
             </div>
-          </div>
+            {{/movies}}
+        </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/2.9999.8/jquery.cycle.all.min.js" type="text/javascript"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+	
+        $(function() {
+                        
+        $.getJSON('film.json', function(data) {
+        var template = $('#cartpl').html();
+        var html = Mustache.to_html(template, data);
+        $('#jumbotron').html(html);
+        $('#jumbotron').cycle({
+				fx: 'fade',
+				pause: 1,
+				next: '#next_btn',
+				prev: '#prev_btn',
+				speed: 1,
+				timeout: 2
+        });
+        }); //getJSON
+                        
+        }); //function
+                        
+        </script>
+        </div>
+      </div>
     </section>
     <!-- Now Showing Carousel-->
         <section id="nowShowing" class="pt-5 pb-5" id="carousel">
@@ -55,49 +77,45 @@
                 <h1 class="text-center p-2 pb-5"><b>NOW SHOWING</b></h1>
             </div> 
                 <div class="container">
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-3 g-4" id="card">
+                      <script id="cardtpl" type="text/template">
+                        {{#movies}}
                         <div class="col">
                           <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
+                            <img src="{{Images}}" class="card-img-top" alt="Photo of {{Title}}"/>
                             <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                              <h5 class="card-title">{{Title}}</h5>
+                              <p class="card-text">{{Plot}}</p>
                             </div>
                             <div class="card-footer">
-                              <small class="text-muted">Last updated 3 mins ago</small>
+                              <small class="text-muted">{{Actors}}</small>
                             </div>
                           </div>
                         </div>
-                        <div class="col">
-                          <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                            </div>
-                            <div class="card-footer">
-                              <small class="text-muted">Last updated 3 mins ago</small>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="card h-100">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                            </div>
-                            <div class="card-footer">
-                              <small class="text-muted">Last updated 3 mins ago</small>
-                            </div>
-                          </div>
-                        </div>
+                        {{/movies}}
+                      </script>
+                      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+                      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/2.9999.8/jquery.cycle.all.min.js" type="text/javascript"></script>
+                      <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js" type="text/javascript"></script>
+                      <script type="text/javascript">
+	
+                        $(function() {
+                        
+                          $.getJSON('film.json', function(data) {
+                            var template = $('#cardtpl').html();
+                            var html = Mustache.to_html(template, data);
+                            $('#card').html(html);
+                          }); //getJSON
+                        
+                        }); //function
+                        
+                        </script>
                       </div>
                 </div>
         </section>
 
     <!-- All Movies Table -->
-        <section>
+        <section id="allMovies">
             <div class="table-responsive table-striped">
               <table id='table'>
                 <tr>
@@ -111,7 +129,7 @@
                   $(document).ready(function () {
           
                     // FETCHING DATA FROM JSON FILE
-                    $.getJSON("film.json",
+                    $.getJSON("film1.json",
                         function (data) {
                       var movie = '';
           
@@ -120,6 +138,7 @@
           
                         //CONSTRUCTION OF ROWS HAVING
                         // DATA FROM JSON OBJECT
+                        
                         movie += '<tr>';
                         movie += '<td>' +
                           value.Title + '</td>';
@@ -136,7 +155,7 @@
                         movie += '</tr>';
                       });
                       
-                      //INSERTING ROWS INTO TABLE
+                      //INSERT ROWS INTO TABLE
                       $('#table').append(movie);
                     });
                   });
